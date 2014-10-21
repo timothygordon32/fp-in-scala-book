@@ -45,4 +45,28 @@ class Chapter02Spec extends WordSpecLike with Matchers {
       else fib(2, 1, 0)
     }
   }
+
+  "Exercise 2.2: Polymorphic sort function" should {
+
+    "report true for sorted Ints" in new SortChecker {
+      isSorted(Array(1, 2), (a:Int, b:Int) => a <= b) should be (true)
+    }
+
+    "report false for unsorted Ints" in new SortChecker {
+      isSorted(Array(1, 3, 2), (a:Int, b:Int) => a <= b) should be (false)
+    }
+
+    "report true for sorted Strings" in new SortChecker {
+      isSorted(Array("aardvark", "banana"), (a:String, b:String) => a <= b) should be (true)
+    }
+
+    "report false for unsorted Strings" in new SortChecker {
+      isSorted(Array("cake", "aardvark", "banana"), (a:String, b:String) => a <= b) should be (false)
+    }
+  }
+
+  trait SortChecker {
+    def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean =
+      as zip as.tail forall {p => ordered(p._1, p._2)}
+  }
 }
