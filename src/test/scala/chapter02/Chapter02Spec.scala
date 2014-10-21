@@ -69,4 +69,13 @@ class Chapter02Spec extends WordSpecLike with Matchers {
     def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean =
       as zip as.tail forall {p => ordered(p._1, p._2)}
   }
+
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
+    (a: A) => (b: B) => f(a, b)
+
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
+    (a: A, b: B) => f(a)(b)
+
+  def compose[A,B,C](f: B => C, g: A => B): A => C =
+    (a: A) => f(g(a))
 }
